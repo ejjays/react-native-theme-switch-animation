@@ -45,3 +45,5 @@ export {
   CircularAnimationConfigExact,
   CircularAnimationConfig,
 };
+
+export default switchTheme;
