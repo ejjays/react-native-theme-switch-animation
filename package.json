@@ -1,6 +1,6 @@
 {
   "name": "react-native-theme-switch-animation",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "A Plug & Play Animation for Switching (Dark/Light) Themes on Android. Revived for the New Architecture (Expo SDK 55+ / React Native 0.82+).",
   "main": "src/index.tsx",
   "types": "src/index.d.ts",

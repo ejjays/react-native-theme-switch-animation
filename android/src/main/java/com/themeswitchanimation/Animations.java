@@ -42,7 +42,10 @@ public class Animations {
       @Override
       public void run() {
         frameCount++;
-        if (frameCount < 2) {
+        // re-capture only after the flipped theme actually painted; the
+        // react commit + fabric draw can outlast a frame or two on heavy
+        // screens, and a stale capture makes the reveal look like a no-op
+        if (frameCount < 6) {
           rootView.postOnAnimation(this);
         } else {
           reactContext.runOnUiQueueThread(() -> {
