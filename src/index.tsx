@@ -31,7 +31,14 @@ if (IS_SUPPORTED_PLATFORM) {
       if (switchFunction) {
         switchFunction();
         if (localAnimationConfig) {
-          unfreezeWrapper();
+          // circular mode re-captures the screen right after this; giving
+          // react two frames to commit + paint the flipped tree keeps the
+          // capture from showing the old theme
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              unfreezeWrapper();
+            });
+          });
         }
       }
     });
