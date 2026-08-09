@@ -46,10 +46,18 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
       return;
     }
     this.rootView = (ViewGroup) activityView;
-    this.capturedImageBitmap = captureScreenshot(this.rootView, this.reactContext);
-    this.capturedImageView = createImageView(this.capturedImageBitmap, this.reactContext);
 
+    // capture must draw on the ui thread: drawing the tree from the native
+    // modules thread races the frame render, and compose aborts on the
+    // cross-thread snapshot observation
     reactContext.runOnUiQueueThread(() -> {
+      this.capturedImageBitmap = captureScreenshot(this.rootView, this.reactContext);
+      if (capturedImageBitmap == null) {
+        this.isAnimating = false;
+        reactContext.emitDeviceEvent("FINISHED_FREEZING_SCREEN");
+        return;
+      }
+      this.capturedImageView = createImageView(this.capturedImageBitmap, this.reactContext);
       if (capturedImageView == null || rootView == null) {
         return;
       }
