@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      - run: npx tsc --noEmit
+
+  android-build:
+    name: Android build (Expo SDK 57)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Scaffold blank Expo app
+        run: npx create-expo-app@latest verify-app --template blank@sdk-57 --no-install
+      - name: Install library into the app
+        working-directory: verify-app
+        run: |
+          npm install --no-audit --no-fund
+          npm install ../ --no-audit --no-fund
+      - name: Prebuild
+        working-directory: verify-app
+        run: npx expo prebuild --platform android --no-install
+      - name: Compile library native module
+        working-directory: verify-app/android
+        run: ./gradlew :react-native-theme-switch-animation:assembleDebug --console=plain
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: library-build
+          path: |
+            android/build/outputs/aar/
+            android/build/generated/source/codegen/
+          if-no-files-found: ignore
