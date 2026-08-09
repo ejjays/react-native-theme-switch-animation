@@ -1,0 +1,48 @@
+{
+  "name": "react-native-theme-switch-animation",
+  "version": "0.9.0",
+  "description": "A Plug & Play Animation for Switching (Dark/Light) Themes on Android. Revived for the New Architecture (Expo SDK 55+ / React Native 0.82+).",
+  "main": "src/index.tsx",
+  "types": "src/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "android",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "react-native",
+    "android",
+    "animation",
+    "theme",
+    "dark mode"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.0",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "typescript": "^5.8.0"
+  },
+  "codegenConfig": {
+    "name": "RNThemeSwitchAnimationModule",
+    "type": "modules",
+    "jsSrcsDir": "src"
+  }
+}

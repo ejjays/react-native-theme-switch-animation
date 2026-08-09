@@ -1,0 +1,59 @@
+buildscript {
+  ext.safeExtGet = { name, fallback ->
+    rootProject.ext.has(name) ? rootProject.ext.get(name) : fallback
+  }
+}
+
+apply plugin: "com.android.library"
+apply plugin: "com.facebook.react"
+
+android {
+  namespace "com.themeswitchanimation"
+
+  compileSdk safeExtGet("compileSdkVersion", 36)
+
+  defaultConfig {
+    minSdk safeExtGet("minSdkVersion", 24)
+    targetSdk safeExtGet("targetSdkVersion", 36)
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
+  }
+
+  buildFeatures {
+    buildConfig true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
+
+  sourceSets {
+    main {
+      java.srcDirs += [
+        "src/newarch",
+        "${project.buildDir}/generated/source/codegen/java"
+      ]
+    }
+  }
+}
+
+react {
+  jsRootDir = file("../src/")
+  libraryName = "ThemeSwitchAnimation"
+  codegenJavaPackageName = "com.themeswitchanimation"
+}
+
+repositories {
+  mavenCentral()
+  google()
+}
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+}
