@@ -63,7 +63,8 @@ const unfreezeWrapper = () => {
   setImmediate(() => {
     if (
       localAnimationConfig.type === 'circular' ||
-      localAnimationConfig.type === 'inverted-circular'
+      localAnimationConfig.type === 'inverted-circular' ||
+      localAnimationConfig.type === 'circular-live'
     ) {
       if (
         'cx' in localAnimationConfig.startingPoint &&

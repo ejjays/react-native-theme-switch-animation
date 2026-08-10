@@ -1,4 +1,4 @@
-type CircularAnimationType = 'circular' | 'inverted-circular';
+type CircularAnimationType = 'circular' | 'inverted-circular' | 'circular-live';
 
 type CircularAnimationConfig = {
   type: CircularAnimationType;

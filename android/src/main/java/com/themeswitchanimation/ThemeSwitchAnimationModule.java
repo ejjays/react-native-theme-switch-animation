@@ -75,6 +75,26 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
       public void run() {
         if (isAnimating) {
           switch (animationType) {
+            case "circular-live":
+              // live hole reveal: swap the frozen capture for the hole view,
+              // which draws the capture minus a growing circle
+              rootView.removeView(capturedImageView);
+              int width = rootView.getWidth();
+              int height = rootView.getHeight();
+              int cx = (int) (width * cxRatio);
+              int cy = (int) (height * cyRatio);
+              final Animations.HoleRevealView holeView = new Animations.HoleRevealView(reactContext, capturedImageBitmap, cx, cy);
+              rootView.addView(holeView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+              Animations.performLiveCircleAnimation(holeView, rootView, (int) duration, cxRatio, cyRatio, new Runnable() {
+                @Override
+                public void run() {
+                  rootView.removeView(holeView);
+                  cleanUp();
+                }
+              });
+              break;
             case "circular":
               Animations.performCircleAnimation(capturedImageView, rootView, (int) duration, cxRatio, cyRatio, reactContext, new Runnable() {
                 @Override
